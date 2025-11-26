@@ -1,25 +1,55 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Register from './pages/Auth/Register';
+import Login from './pages/Auth/Login';
+import UserDashboard from './pages/Dashboard/UserDashboard';
+import CreditRequestForm from './pages/Credits/CreditRequestForm';
+import CreditList from './pages/Credits/CreditList';
 import './App.css';
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
+  return user ? <>{children}</> : <Navigate to="/login" />;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <Routes>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <UserDashboard />
+                    </ProtectedRoute>
+                  }
+              />
+              <Route
+                  path="/credit-request"
+                  element={
+                    <ProtectedRoute>
+                      <CreditRequestForm />
+                    </ProtectedRoute>
+                  }
+              />
+              <Route
+                  path="/my-credits"
+                  element={
+                    <ProtectedRoute>
+                      <CreditList />
+                    </ProtectedRoute>
+                  }
+              />
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+            </Routes>
+          </div>
+        </Router>
+      </AuthProvider>
   );
 }
 
