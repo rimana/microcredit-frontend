@@ -6,7 +6,7 @@ import './Auth.css';
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({
-        username: '', // ✅ CHANGEZ: 'email' → 'username'
+        username: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -27,11 +27,35 @@ const Login: React.FC = () => {
         setError('');
         setLoading(true);
 
+        console.log('🔄 Login submission for:', formData.username);
+
         try {
-            await login(formData.username, formData.password); // ✅ CHANGEZ: formData.email → formData.username
-            navigate('/dashboard');
+            // Appeler login et récupérer l'utilisateur
+            const user = await login(formData.username, formData.password);
+
+            console.log('✅ Login successful, user role:', user.role);
+            console.log('📍 Redirecting based on role...');
+
+            // Rediriger selon le rôle
+            switch (user.role) {
+                case 'ADMIN':
+                    console.log('🚀 Redirecting to ADMIN dashboard');
+                    navigate('/admin/dashboard');
+                    break;
+                case 'AGENT':
+                    console.log('🚀 Redirecting to AGENT dashboard');
+                    navigate('/agent/dashboard');
+                    break;
+                case 'CLIENT':
+                default:
+                    console.log('🚀 Redirecting to CLIENT dashboard');
+                    navigate('/dashboard');
+                    break;
+            }
+
         } catch (err: any) {
-            setError('Nom d\'utilisateur ou mot de passe incorrect'); // ✅ MESSAGE CORRIGÉ
+            console.error('❌ Login failed:', err.message || err);
+            setError('Nom d\'utilisateur ou mot de passe incorrect');
         } finally {
             setLoading(false);
         }
@@ -46,7 +70,7 @@ const Login: React.FC = () => {
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     <div className="form-group">
-                        <label htmlFor="username">Nom d'utilisateur</label> {/* ✅ CHANGEZ */}
+                        <label htmlFor="username">Nom d'utilisateur</label>
                         <input
                             type="text"
                             id="username"
@@ -54,6 +78,7 @@ const Login: React.FC = () => {
                             value={formData.username}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
@@ -66,6 +91,7 @@ const Login: React.FC = () => {
                             value={formData.password}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 

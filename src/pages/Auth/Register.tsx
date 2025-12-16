@@ -1,33 +1,84 @@
-// src/pages/Auth/Register.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { UserRole } from '../../ types/auth';
 import './Auth.css';
 
 const Register: React.FC = () => {
     const [formData, setFormData] = useState({
-        username: '', // ✅ AJOUTEZ: Le backend attend un username
+        username: '',
         fullname: '',
         email: '',
         phone: '',
-        cin: '', // ✅ AJOUTEZ: requis par le backend
-        address: '', // ✅ AJOUTEZ: requis par le backend
-        employed: false, // ✅ AJOUTEZ: requis par le backend
+        cin: '',
+        address: '',
+        employed: false,
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        role: UserRole.CLIENT,
+        secretCode: ''
     });
+
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const { register } = useAuth();
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
         setFormData({
             ...formData,
             [e.target.name]: value
         });
+    };
+
+    const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const role = e.target.value as UserRole;
+        setFormData({
+            ...formData,
+            role,
+            secretCode: ''
+        });
+    };
+
+    const getSecretCodeLabel = () => {
+        switch (formData.role) {
+            case UserRole.ADMIN:
+                return "Code Secret Administrateur *";
+            case UserRole.AGENT:
+                return "Code Secret Agent *";
+            default:
+                return "";
+        }
+    };
+
+    const getSecretCodePlaceholder = () => {
+        switch (formData.role) {
+            case UserRole.ADMIN:
+                return "Entrez ADMIN_SECRET_2024";
+            case UserRole.AGENT:
+                return "Entrez AGENT_SECRET_2024";
+            default:
+                return "";
+        }
+    };
+
+    const getRoleDescription = () => {
+        switch (formData.role) {
+            case UserRole.CLIENT:
+                return "Pour faire des demandes de crédit - Aucun code requis";
+            case UserRole.AGENT:
+                return "Pour gérer les demandes de crédit - Code secret requis";
+            case UserRole.ADMIN:
+                return "Pour administrer la plateforme - Code secret requis";
+            default:
+                return "";
+        }
+    };
+
+    const needsSecretCode = () => {
+        return formData.role === UserRole.ADMIN || formData.role === UserRole.AGENT;
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -35,30 +86,55 @@ const Register: React.FC = () => {
         setError('');
         setLoading(true);
 
+        // Validation de base
         if (formData.password !== formData.confirmPassword) {
             setError('Les mots de passe ne correspondent pas');
             setLoading(false);
             return;
         }
 
+        if (formData.password.length < 6) {
+            setError('Le mot de passe doit contenir au moins 6 caractères');
+            setLoading(false);
+            return;
+        }
+
+        // Validation pour ADMIN et AGENT - CORRECTION ICI
+        if (needsSecretCode() && !formData.secretCode) {
+            setError(`Le code secret est requis pour créer un compte ${formData.role.toLowerCase()}`);
+            setLoading(false);
+            return;
+        }
+
         try {
-            // ✅ FORMAT COMPATIBLE AVEC LE BACKEND
-            await register({
-                username: formData.username, // ✅ OBLIGATOIRE pour le backend
+            // Préparer les données
+            const userData = {
+                username: formData.username,
                 email: formData.email,
                 password: formData.password,
                 phone: formData.phone,
-                cin: formData.cin || "DEFAULT_CIN", // ✅ OBLIGATOIRE
-                address: formData.address || "DEFAULT_ADDRESS", // ✅ OBLIGATOIRE
-                employed: formData.employed, // ✅ OBLIGATOIRE
-                // monthlyIncome et profession sont optionnels
-            });
-            navigate('/login'); // ✅ Redirige vers login après inscription
+                cin: formData.cin || "DEFAULT_CIN",
+                address: formData.address || "DEFAULT_ADDRESS",
+                employed: formData.employed,
+                role: formData.role,
+                adminSecret: formData.secretCode || undefined
+            };
+
+            console.log('📝 Données d\'inscription:', userData);
+
+            await register(userData);
+            navigate('/login');
+
         } catch (err: any) {
-            setError(err.response?.data || 'Erreur lors de l\'inscription');
+            setError(err.response?.data || err.message || 'Erreur lors de l\'inscription');
         } finally {
             setLoading(false);
         }
+    };
+
+    // Fonction pour déterminer si le champ secretCode doit être requis
+    const isSecretCodeRequired = () => {
+        return formData.role === UserRole.ADMIN || formData.role === UserRole.AGENT;
     };
 
     return (
@@ -69,7 +145,6 @@ const Register: React.FC = () => {
                 {error && <div className="error-message">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="auth-form">
-                    {/* ✅ NOUVEAU CHAMP USERNAME */}
                     <div className="form-group">
                         <label htmlFor="username">Nom d'utilisateur *</label>
                         <input
@@ -79,6 +154,7 @@ const Register: React.FC = () => {
                             value={formData.username}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
@@ -90,6 +166,7 @@ const Register: React.FC = () => {
                             name="fullname"
                             value={formData.fullname}
                             onChange={handleChange}
+                            disabled={loading}
                         />
                     </div>
 
@@ -102,6 +179,7 @@ const Register: React.FC = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
@@ -114,10 +192,10 @@ const Register: React.FC = () => {
                             value={formData.phone}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
-                    {/* ✅ NOUVEAUX CHAMPS POUR LE BACKEND */}
                     <div className="form-group">
                         <label htmlFor="cin">CIN *</label>
                         <input
@@ -127,6 +205,7 @@ const Register: React.FC = () => {
                             value={formData.cin}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
@@ -139,20 +218,64 @@ const Register: React.FC = () => {
                             value={formData.address}
                             onChange={handleChange}
                             required
+                            disabled={loading}
                         />
                     </div>
 
                     <div className="form-group checkbox-group">
-                        <label>
+                        <label className="checkbox-label">
                             <input
                                 type="checkbox"
                                 name="employed"
                                 checked={formData.employed}
                                 onChange={handleChange}
+                                disabled={loading}
                             />
-                            Employé
+                            <span>Employé</span>
                         </label>
                     </div>
+
+                    <div className="form-group">
+                        <label htmlFor="role">Type de Compte *</label>
+                        <select
+                            id="role"
+                            name="role"
+                            value={formData.role}
+                            onChange={handleRoleChange}
+                            required
+                            disabled={loading}
+                            className="role-select"
+                        >
+                            <option value={UserRole.CLIENT}>👤 Client</option>
+                            <option value={UserRole.AGENT}>👔 Agent de Crédit</option>
+                            <option value={UserRole.ADMIN}>👑 Administrateur</option>
+                        </select>
+                        <small className="form-text role-description">
+                            {getRoleDescription()}
+                        </small>
+                    </div>
+
+                    {/* Champ code secret pour ADMIN et AGENT - CORRECTION ICI */}
+                    {needsSecretCode() && (
+                        <div className={`form-group secret-code-group ${formData.role.toLowerCase()}-secret`}>
+                            <label htmlFor="secretCode">{getSecretCodeLabel()}</label>
+                            <input
+                                type="password"
+                                id="secretCode"
+                                name="secretCode"
+                                value={formData.secretCode}
+                                onChange={handleChange}
+                                required={isSecretCodeRequired()} // Utiliser la fonction
+                                disabled={loading}
+                                placeholder={getSecretCodePlaceholder()}
+                            />
+                            <small className="form-text">
+                                {formData.role === UserRole.ADMIN
+                                    ? "Code secret requis pour créer un compte administrateur"
+                                    : "Code secret requis pour créer un compte agent"}
+                            </small>
+                        </div>
+                    )}
 
                     <div className="form-group">
                         <label htmlFor="password">Mot de passe *</label>
@@ -163,7 +286,10 @@ const Register: React.FC = () => {
                             value={formData.password}
                             onChange={handleChange}
                             required
+                            disabled={loading}
+                            minLength={6}
                         />
+                        <small className="form-text">Minimum 6 caractères</small>
                     </div>
 
                     <div className="form-group">
@@ -175,11 +301,17 @@ const Register: React.FC = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             required
+                            disabled={loading}
+                            minLength={6}
                         />
                     </div>
 
-                    <button type="submit" className="auth-button" disabled={loading}>
-                        {loading ? 'Inscription...' : 'S\'inscrire'}
+                    <button
+                        type="submit"
+                        className={`auth-button ${formData.role.toLowerCase()}-button`}
+                        disabled={loading}
+                    >
+                        {loading ? 'Inscription...' : `S'inscrire en tant que ${formData.role.toLowerCase()}`}
                     </button>
                 </form>
 

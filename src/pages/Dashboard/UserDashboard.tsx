@@ -35,7 +35,7 @@ const UserDashboard: React.FC = () => {
                 <div className="stats-cards">
                     <div className="card">
                         <h3>Solde Disponible</h3>
-                        <p className="amount">0 €</p>
+                        <p className="amount">0 MAD</p>
                     </div>
                     <div className="card">
                         <h3>Prêts Actifs</h3>

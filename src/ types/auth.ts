@@ -10,6 +10,14 @@ export interface LoginResponse {
     username: string;
     email: string;
     role: UserRole;
+    // Ajoute ces champs s'ils sont retournés par le backend
+    phone?: string;
+    cin?: string;
+    address?: string;
+    employed?: boolean;
+    monthlyIncome?: number;
+    profession?: string;
+    fullname?: string;
 }
 
 export interface SignupRequest {
@@ -23,6 +31,7 @@ export interface SignupRequest {
     monthlyIncome?: number;
     profession?: string;
     role?: UserRole;
+    adminSecret?: string; // Ajouter ce champ
 }
 
 export interface User {

@@ -1,3 +1,4 @@
+// storage/tokenService.ts
 export const tokenService = {
     getToken: (): string | null => {
         return localStorage.getItem('token');
@@ -25,3 +26,11 @@ export const tokenService = {
         localStorage.removeItem('user');
     }
 };
+
+// Exportez aussi les fonctions individuellement
+export const getToken = tokenService.getToken;
+export const setToken = tokenService.setToken;
+export const removeToken = tokenService.removeToken;
+export const getUser = tokenService.getUser;
+export const setUser = tokenService.setUser;
+export const clear = tokenService.clear;

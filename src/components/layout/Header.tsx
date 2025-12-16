@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom'; // Ajoutez cette importation
 
 const Header: React.FC = () => {
     const { user, logout } = useAuth();
@@ -12,6 +13,10 @@ const Header: React.FC = () => {
                     {user && (
                         <div className="user-menu">
                             <span>Bonjour, {user.username}</span>
+                            {/* Ajoutez le lien vers le profil */}
+                            <Link to="/profile" className="profile-link">
+                                Mon Profil
+                            </Link>
                             <button onClick={logout}>Déconnexion</button>
                         </div>
                     )}
