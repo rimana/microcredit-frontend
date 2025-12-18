@@ -1,46 +1,153 @@
 .admin-navbar {
-    background: #2c3e50;
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
     color: white;
     min-height: 100vh;
-    width: 250px;
+    width: 280px;
     position: fixed;
     left: 0;
     top: 0;
     z-index: 1000;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
 }
 
 .navbar-header {
-    padding: 20px;
-    border-bottom: 1px solid #34495e;
+    padding: 35px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.navbar-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,0.5) 50%,
+        transparent 100%);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.3; transform: translateX(-100%); }
+    50% { opacity: 1; transform: translateX(100%); }
 }
 
 .navbar-header h2 {
     margin: 0;
-    font-size: 20px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    position: relative;
+    z-index: 1;
+    text-shadow:
+        2px 2px 4px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
 }
 
 .user-info {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
     align-items: center;
     font-size: 14px;
+    position: relative;
+    z-index: 1;
+    padding: 18px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-info span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.user-info span::before {
+    content: '👤';
+    font-size: 18px;
 }
 
 .logout-btn {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 12px 20px;
+    padding: 10px 20px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.logout-btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .logout-btn:hover {
-    background: #c0392b;
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
 .navbar-menu {

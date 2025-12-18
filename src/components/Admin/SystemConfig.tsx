@@ -1,5 +1,6 @@
 import React from 'react';
 import { SystemSettings } from '../../ types/admin';
+import './SystemConfig.css';
 
 interface SystemConfigProps {
     settings: SystemSettings;
@@ -100,7 +101,7 @@ export const SystemConfig: React.FC<SystemConfigProps> = ({
                     <button 
                         onClick={onSave} 
                         disabled={loading}
-                        className="btn-primary"
+                        className="save-btn"
                     >
                         {loading ? 'Sauvegarde...' : 'Sauvegarder'}
                     </button>
@@ -108,7 +109,7 @@ export const SystemConfig: React.FC<SystemConfigProps> = ({
                     <button 
                         onClick={onReset}
                         disabled={loading}
-                        className="btn-secondary"
+                        className="reset-btn"
                     >
                         Réinitialiser
                     </button>
