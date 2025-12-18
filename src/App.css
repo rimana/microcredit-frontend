@@ -76,3 +76,44 @@ body {
   margin-bottom: 15px;
   border: 1px solid #cfc;
 }
+/* App.css - Ajoutez ces styles */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .admin-content {
+    padding: 15px;
+  }
+}
+
+/* Styles pour les messages d'alerte */
+.alert-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px;
+  text-align: center;
+}
+
+/* Styles pour les pages protégées */
+.protected-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}

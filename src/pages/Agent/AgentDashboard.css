@@ -1,0 +1,333 @@
+/* Styles pour le header et les boutons ML */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.dashboard-header h1 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-ml-test {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-ml-test:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-quick-ml {
+    padding: 12px 20px;
+    background: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-quick-ml:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+/* Section outils ML */
+.ml-tools-section {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.ml-tools-section h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.tool-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.tool-card:hover {
+    border-color: #3498db;
+    background: white;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.2);
+}
+
+.tool-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.tool-card h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.tool-card p {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.tool-btn {
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.tool-btn:hover {
+    background: #2980b9;
+}
+
+.tool-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* En-tête de liste */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-refresh {
+    padding: 8px 15px;
+    background: #f8f9fa;
+    color: #3498db;
+    border: 1px solid #3498db;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-refresh:hover {
+    background: #3498db;
+    color: white;
+}
+
+/* État vide */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px dashed #ddd;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #95a5a6;
+}
+
+.empty-state h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+.btn-test-ml {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-test-ml:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* En-tête détails */
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-ml-analyze {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-ml-analyze:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Bouton ML dans les actions */
+.btn-ml {
+    padding: 12px 25px;
+    background: #9b59b6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-ml:hover {
+    background: #8e44ad;
+    transform: translateY(-2px);
+}
+
+/* Bouton lancer scoring */
+.btn-run-scoring {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-run-scoring:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Métadonnées crédit */
+.credit-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.credit-purpose {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Stat change */
+.stat-change {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .btn-ml-test, .btn-quick-ml {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .decision-actions {
+        flex-wrap: wrap;
+    }
+
+    .btn-ml {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}

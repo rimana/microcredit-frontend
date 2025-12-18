@@ -12,7 +12,14 @@ import Profile from './pages/Profile/Profile';
 import UserManagement from './pages/Admin/UserManagement'; // À créer
 import AdminCredits from './pages/Admin/CreditManagement'; // À créer
 import Statistics from './pages/Admin/Statistics';
-import Settings from './pages/Admin/SystemSettings';// À créer
+import Settings from './pages/Admin/SystemSettings'; // À créer
+
+// IMPORTATIONS AJOUTÉES :
+import AgentDashboard from './pages/Agent/AgentDashboard'; // Le composant que vous avez créé
+import MLTest from './pages/Tools/MLTest'; // Le composant de test ML que vous avez créé
+import UniversalOcrScanner from './pages/Credits/UniversalOcrScanner'; // Si vous avez ce composant
+import AdminNavbar from './components/Admin/AdminNavbar'; // Pour la navigation admin
+
 import './App.css';
 
 // Route protégée standard
@@ -58,6 +65,22 @@ const AgentRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return <>{children}</>;
 };
 
+// Route pour utilisateur seulement (non admin, non agent)
+const UserRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { user } = useAuth();
+
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
+
+    if (user.role === 'ADMIN' || user.role === 'AGENT') {
+        console.warn(`⚠️  User ${user.username} (${user.role}) tried to access user-only route`);
+        return <Navigate to="/" />;
+    }
+
+    return <>{children}</>;
+};
+
 // Composant pour la redirection automatique
 const RoleBasedRedirect: React.FC = () => {
     const { user } = useAuth();
@@ -76,6 +99,18 @@ const RoleBasedRedirect: React.FC = () => {
         default:
             return <Navigate to="/dashboard" />;
     }
+};
+
+// Layout pour admin avec navbar
+const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    return (
+        <div className="admin-layout">
+            <AdminNavbar />
+            <div className="admin-content">
+                {children}
+            </div>
+        </div>
+    );
 };
 
 function App() {
@@ -103,44 +138,55 @@ function App() {
 
                         {/* Routes ADMIN */}
                         <Route
-                            path="/admin/dashboard"
+                            path="/admin/*"
                             element={
                                 <AdminRoute>
-                                    <AdminDashboard />
+                                    <AdminLayout>
+                                        <Routes>
+                                            <Route path="dashboard" element={<AdminDashboard />} />
+                                            <Route path="users" element={<UserManagement />} />
+                                            <Route path="credits" element={<AdminCredits />} />
+                                            <Route path="statistics" element={<Statistics />} />
+                                            <Route path="settings" element={<Settings />} />
+                                            {/* Redirection par défaut pour /admin */}
+                                            <Route path="" element={<Navigate to="dashboard" />} />
+                                        </Routes>
+                                    </AdminLayout>
                                 </AdminRoute>
                             }
                         />
-                        {/* AJOUTEZ CES ROUTES MANQUANTES */}
+
+                        {/* Routes AGENT */}
                         <Route
-                            path="/admin/users"
+                            path="/agent/dashboard"
                             element={
-                                <AdminRoute>
-                                    <UserManagement />
-                                </AdminRoute>
+                                <AgentRoute>
+                                    <AgentDashboard />
+                                </AgentRoute>
                             }
                         />
+
+                        {/* Routes AGENT (autres) - vous pouvez en ajouter plus tard */}
                         <Route
-                            path="/admin/credits"
+                            path="/agent/*"
                             element={
-                                <AdminRoute>
-                                    <AdminCredits />
-                                </AdminRoute>
+                                <AgentRoute>
+                                    <Routes>
+                                        <Route path="dashboard" element={<AgentDashboard />} />
+                                        {/* Vous pouvez ajouter d'autres routes agent ici */}
+                                        <Route path="" element={<Navigate to="dashboard" />} />
+                                    </Routes>
+                                </AgentRoute>
                             }
                         />
+
+                        {/* Routes pour le test ML (accessible aux admin et agents) */}
                         <Route
-                            path="/admin/statistics"
+                            path="/tools/ml-test"
                             element={
-                                <AdminRoute>
-                                    <Statistics />
-                                </AdminRoute>
-                            }
-                        />
-                        <Route
-                            path="/admin/settings"
-                            element={
-                                <AdminRoute>
-                                    <Settings />
-                                </AdminRoute>
+                                <ProtectedRoute>
+                                    <MLTest />
+                                </ProtectedRoute>
                             }
                         />
 
@@ -148,9 +194,9 @@ function App() {
                         <Route
                             path="/credit-request"
                             element={
-                                <ProtectedRoute>
+                                <UserRoute>
                                     <CreditRequestForm />
-                                </ProtectedRoute>
+                                </UserRoute>
                             }
                         />
                         <Route
@@ -169,6 +215,17 @@ function App() {
                                 </ProtectedRoute>
                             }
                         />
+                        <Route
+                            path="/ocr-scanner"
+                            element={
+                                <ProtectedRoute>
+                                    <UniversalOcrScanner />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* Route 404 */}
+                        <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </div>
             </Router>
