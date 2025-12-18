@@ -151,7 +151,7 @@ const SystemSettingsPage: React.FC = () => {
 
         {/* Aperçu des paramètres actuels */}
         {settings && (
-          <div className="admin-stats-grid">
+          <div className="admin-stats-grid stats-four-cols">
             <div className="admin-card primary">
               <div className="card-icon">💰</div>
               <div className="card-content">

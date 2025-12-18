@@ -2,90 +2,147 @@
    USER TABLE - DESIGN SOPHISTIQUÉ
    =========================== */
 
-.user-table-container {
-    background: white;
-    border-radius: 16px;
-    padding: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    border: 1px solid rgba(226, 232, 240, 0.8);
-}
-
 .user-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-table__header {
+    padding: 20px;
+    border-bottom: 2px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.user-table__header h3 {
     margin: 0;
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.user-table thead {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+.user-table__actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 
-.user-table th {
-    padding: 18px 20px;
+.user-table__actions span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.user-table__container {
+    overflow-x: auto;
+}
+
+.user-table__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.user-table__table thead {
+    background: #f8fafc;
+}
+
+.user-table__table th {
+    padding: 16px 12px;
     text-align: left;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #475569;
+    letter-spacing: 0.5px;
+    color: #64748b;
     border-bottom: 2px solid #e2e8f0;
-    position: relative;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
 }
 
-.user-table th::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
-    transition: width 0.3s ease;
+.user-table__table th:first-child {
+    width: 50px;
+    text-align: center;
 }
 
-.user-table th:hover::after {
-    width: 100%;
+.user-table__table th:nth-child(2) {
+    width: 180px; /* NOM D'UTILISATEUR */
 }
 
-.user-table td {
-    padding: 18px 20px;
-    text-align: left;
+.user-table__table th:nth-child(3) {
+    width: 200px; /* EMAIL */
+}
+
+.user-table__table th:nth-child(4) {
+    width: 150px; /* RÔLE */
+}
+
+.user-table__table th:nth-child(5) {
+    width: 130px; /* TÉLÉPHONE */
+}
+
+.user-table__table th:nth-child(6) {
+    width: 100px; /* CRÉDITS */
+    text-align: center;
+}
+
+.user-table__table th:nth-child(7) {
+    width: 150px; /* MONTANT TOTAL */
+    text-align: right;
+}
+
+.user-table__table th:nth-child(8) {
+    width: 150px; /* ACTIONS */
+    text-align: center;
+}
+
+.user-table__table th:hover {
+    background: #f1f5f9;
+}
+
+.user-table__table th i {
+    margin-left: 5px;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.user-table__table td {
+    padding: 16px 12px;
     border-bottom: 1px solid #f1f5f9;
     color: #334155;
     font-size: 14px;
-    transition: all 0.3s ease;
+    vertical-align: middle;
 }
 
-.user-table tbody tr {
-    transition: all 0.3s ease;
-    position: relative;
+.user-table__table td:first-child {
+    text-align: center;
 }
 
-.user-table tbody tr::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
+.user-table__table td:nth-child(6) {
+    text-align: center;
 }
 
-.user-table tbody tr:hover {
-    background: linear-gradient(90deg, rgba(79, 70, 229, 0.03) 0%, rgba(248, 250, 252, 1) 100%);
-    transform: scale(1.01);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.user-table__table td:nth-child(7) {
+    text-align: right;
 }
 
-.user-table tbody tr:hover::before {
-    transform: scaleY(1);
+.user-table__table td:nth-child(8) {
+    text-align: center;
 }
 
-.user-table tbody tr:last-child td {
+.user-table__table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.user-table__table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.user-table__table tbody tr:last-child td {
     border-bottom: none;
 }
 

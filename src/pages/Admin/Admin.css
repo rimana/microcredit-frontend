@@ -17,9 +17,9 @@
 .admin-layout {
     min-height: 100vh;
     background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-    display: flex;
-    flex-direction: column;
     position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 .admin-layout::before {
@@ -38,10 +38,8 @@
 
 /* === CONTAINER PRINCIPAL === */
 .admin-container {
-    width: calc(100% - 280px); /* Largeur moins la navbar */
-    margin-left: 280px; /* Compensation pour la navbar fixe */
+    margin-left: 280px;
     padding: 40px 30px;
-    flex: 1;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.6s ease;
@@ -107,8 +105,8 @@
 /* === GRILLE DE STATISTIQUES === */
 .admin-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     margin-bottom: 40px;
     animation: fadeInUp 0.6s ease 0.2s both;
 }
@@ -126,6 +124,25 @@
 /* Grille responsive pour 2 colonnes */
 .admin-stats-grid.stats-two-cols {
     grid-template-columns: repeat(2, 1fr);
+}
+
+/* Responsive: adaptation pour les petits écrans */
+@media (max-width: 1400px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* === CARTES ADMIN === */

@@ -3,17 +3,18 @@
    =========================== */
 
 .stat-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 28px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     gap: 20px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .stat-card::before {
@@ -35,7 +36,8 @@
 
 .stat-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .stat-icon {

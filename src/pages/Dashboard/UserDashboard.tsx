@@ -21,10 +21,10 @@ const UserDashboard: React.FC = () => {
 
             {/* Navigation */}
             <nav className="nav">
-                <Link to="/dashboard" className="nav-link active">Dashboard</Link>
-                <Link to="/credit-request" className="nav-link">Demande de Crédit</Link>
-                <Link to="/my-credits" className="nav-link">Mes Crédits</Link>
-                <Link to="/profile" className="nav-link">Mon Profil</Link>
+                <Link to="/dashboard" className="nav-link active">📊 Dashboard</Link>
+                <Link to="/credit-request" className="nav-link">💳 Demande de Crédit</Link>
+                <Link to="/my-credits" className="nav-link">📋 Mes Crédits</Link>
+                <Link to="/profile" className="nav-link">👤 Mon Profil</Link>
             </nav>
 
             {/* Main Content */}
@@ -34,48 +34,48 @@ const UserDashboard: React.FC = () => {
                 {/* Statistics Cards */}
                 <div className="stats-cards">
                     <div className="card">
-                        <h3>Solde Disponible</h3>
+                        <h3>💰 Solde Disponible</h3>
                         <p className="amount">0 MAD</p>
                     </div>
                     <div className="card">
-                        <h3>Prêts Actifs</h3>
+                        <h3>📈 Prêts Actifs</h3>
                         <p className="amount">0</p>
                     </div>
                     <div className="card">
-                        <h3>Demandes en Cours</h3>
+                        <h3>⏳ Demandes en Cours</h3>
                         <p className="amount">0</p>
                     </div>
                     <div className="card">
-                        <h3>Score de Crédit</h3>
+                        <h3>⭐ Score de Crédit</h3>
                         <p className="amount">--</p>
                     </div>
                 </div>
 
                 {/* Quick Actions */}
                 <div className="quick-actions-section">
-                    <h3>Actions Rapides</h3>
+                    <h3>⚡ Actions Rapides</h3>
                     <div className="quick-actions">
                         <Link to="/credit-request" className="action-btn primary">
                             <span>➕</span>
-                            Nouvelle Demande de Crédit
+                            <span>Nouvelle Demande de Crédit</span>
                         </Link>
                         <Link to="/profile" className="action-btn secondary">
                             <span>👤</span>
-                            Compléter mon Profil
+                            <span>Compléter mon Profil</span>
                         </Link>
                         <Link to="/my-credits" className="action-btn secondary">
                             <span>📋</span>
-                            Voir mes Demandes
+                            <span>Voir mes Demandes</span>
                         </Link>
                     </div>
                 </div>
 
                 {/* Recent Activity */}
                 <div className="recent-activity">
-                    <h3>Activité Récente</h3>
+                    <h3>📊 Activité Récente</h3>
                     <div className="activity-list">
                         <div className="activity-item">
-                            <p>Aucune activité récente</p>
+                            <p>💡 Aucune activité récente pour le moment</p>
                         </div>
                     </div>
                 </div>

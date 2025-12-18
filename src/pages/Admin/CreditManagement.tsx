@@ -107,7 +107,7 @@ const CreditManagement: React.FC = () => {
         </div>
 
         {/* Statistiques */}
-        <div className="admin-stats-grid">
+        <div className="admin-stats-grid stats-four-cols">
           <div className="admin-card primary">
             <div className="card-icon">📊</div>
             <div className="card-content">
@@ -145,7 +145,7 @@ const CreditManagement: React.FC = () => {
         </div>
 
         {/* Statistiques montants */}
-        <div className="admin-stats-grid">
+        <div className="admin-stats-grid stats-three-cols">
           <div className="admin-card info">
             <div className="card-icon">💰</div>
             <div className="card-content">
