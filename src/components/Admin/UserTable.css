@@ -1,64 +1,287 @@
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+/* ===========================
+   USER TABLE - DESIGN SOPHISTIQUÉ
+   =========================== */
+
+.user-table-container {
+    background: white;
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.user-table th,
-.user-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.user-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+
+.user-table thead {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
 .user-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
+    padding: 18px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+    position: relative;
 }
 
-.user-table tr:hover {
-    background-color: #f5f5f5;
+.user-table th::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+    transition: width 0.3s ease;
+}
+
+.user-table th:hover::after {
+    width: 100%;
+}
+
+.user-table td {
+    padding: 18px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.user-table tbody tr {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.user-table tbody tr::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.user-table tbody tr:hover {
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.03) 0%, rgba(248, 250, 252, 1) 100%);
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.user-table tbody tr:hover::before {
+    transform: scaleY(1);
+}
+
+.user-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badges de rôles */
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .role-admin {
-    color: #e74c3c;
-    font-weight: bold;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #b91c1c;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.role-admin::before {
+    content: '👑';
 }
 
 .role-agent {
-    color: #3498db;
-    font-weight: bold;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.role-agent::before {
+    content: '🎯';
 }
 
 .role-user {
-    color: #27ae60;
-    font-weight: bold;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #047857;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
 }
 
+.role-user::before {
+    content: '👤';
+}
+
+/* Actions des utilisateurs */
 .user-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
 }
 
 .edit-btn, .delete-btn, .toggle-btn {
-    padding: 6px 12px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-btn {
-    background-color: #3498db;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
+}
+
+.edit-btn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.edit-btn::before {
+    content: '✏️';
 }
 
 .delete-btn {
-    background-color: #e74c3c;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
 }
 
+.delete-btn:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-btn::before {
+    content: '🗑️';
+}
+
 .toggle-btn {
-    background-color: #f39c12;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     color: white;
 }
+
+.toggle-btn:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.toggle-btn::before {
+    content: '🔄';
+}
+
+.edit-btn:active, .delete-btn:active, .toggle-btn:active {
+    transform: translateY(0);
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-active {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.status-active::before {
+    content: '●';
+    color: #10b981;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.status-inactive {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.status-inactive::before {
+    content: '●';
+    color: #ef4444;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #64748b;
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.empty-state-subtext {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .user-table {
+        font-size: 12px;
+    }
+
+    .user-table th,
+    .user-table td {
+        padding: 12px 10px;
+    }
+
+    .user-actions {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .edit-btn, .delete-btn, .toggle-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+

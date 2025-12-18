@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { UserRole } from '../../ types/auth';
+import { UserRole } from '../../types/auth';
 import './Auth.css';
 
 const Register: React.FC = () => {
@@ -140,83 +140,120 @@ const Register: React.FC = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h1>Créer un Compte</h1>
+                {/* Logo sophistiqué */}
+                <div className="auth-logo">
+                    <div className="logo-circle">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5Z" 
+                                  stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                            <path d="M20 12V20L26 26" 
+                                  stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
 
-                {error && <div className="error-message">{error}</div>}
+                <h1>Créer un Compte</h1>
+                <p className="auth-subtitle">Rejoignez notre plateforme de microcrédit</p>
+
+                {error && <div className="error-message">⚠️ {error}</div>}
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     <div className="form-group">
-                        <label htmlFor="username">Nom d'utilisateur *</label>
+                        <label htmlFor="username">
+                            <span className="label-icon">👤</span>
+                            Nom d'utilisateur
+                        </label>
                         <input
                             type="text"
                             id="username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
+                            placeholder="Choisissez un nom d'utilisateur"
                             required
                             disabled={loading}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="fullname">Nom Complet</label>
+                        <label htmlFor="fullname">
+                            <span className="label-icon">✍️</span>
+                            Nom Complet
+                        </label>
                         <input
                             type="text"
                             id="fullname"
                             name="fullname"
                             value={formData.fullname}
                             onChange={handleChange}
+                            placeholder="Votre nom complet"
                             disabled={loading}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">Email *</label>
+                        <label htmlFor="email">
+                            <span className="label-icon">📧</span>
+                            Email
+                        </label>
                         <input
                             type="email"
                             id="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
+                            placeholder="votre.email@exemple.com"
                             required
                             disabled={loading}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">Téléphone *</label>
+                        <label htmlFor="phone">
+                            <span className="label-icon">📱</span>
+                            Téléphone
+                        </label>
                         <input
                             type="tel"
                             id="phone"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
+                            placeholder="+212 6XX XXX XXX"
                             required
                             disabled={loading}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="cin">CIN *</label>
+                        <label htmlFor="cin">
+                            <span className="label-icon">🪪</span>
+                            CIN
+                        </label>
                         <input
                             type="text"
                             id="cin"
                             name="cin"
                             value={formData.cin}
                             onChange={handleChange}
+                            placeholder="Numéro de CIN"
                             required
                             disabled={loading}
                         />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="address">Adresse *</label>
+                        <label htmlFor="address">
+                            <span className="label-icon">📍</span>
+                            Adresse
+                        </label>
                         <input
                             type="text"
                             id="address"
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
+                            placeholder="Votre adresse complète"
                             required
                             disabled={loading}
                         />
@@ -231,12 +268,15 @@ const Register: React.FC = () => {
                                 onChange={handleChange}
                                 disabled={loading}
                             />
-                            <span>Employé</span>
+                            <span>Je suis employé(e)</span>
                         </label>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="role">Type de Compte *</label>
+                        <label htmlFor="role">
+                            <span className="label-icon">🎭</span>
+                            Type de Compte
+                        </label>
                         <select
                             id="role"
                             name="role"
@@ -255,51 +295,62 @@ const Register: React.FC = () => {
                         </small>
                     </div>
 
-                    {/* Champ code secret pour ADMIN et AGENT - CORRECTION ICI */}
+                    {/* Champ code secret pour ADMIN et AGENT */}
                     {needsSecretCode() && (
-                        <div className={`form-group secret-code-group ${formData.role.toLowerCase()}-secret`}>
-                            <label htmlFor="secretCode">{getSecretCodeLabel()}</label>
+                        <div className={`secret-code-group ${formData.role.toLowerCase()}-secret`}>
+                            <label htmlFor="secretCode">
+                                <span className="label-icon">🔐</span>
+                                {getSecretCodeLabel()}
+                            </label>
                             <input
                                 type="password"
                                 id="secretCode"
                                 name="secretCode"
                                 value={formData.secretCode}
                                 onChange={handleChange}
-                                required={isSecretCodeRequired()} // Utiliser la fonction
+                                required={isSecretCodeRequired()}
                                 disabled={loading}
                                 placeholder={getSecretCodePlaceholder()}
                             />
                             <small className="form-text">
                                 {formData.role === UserRole.ADMIN
-                                    ? "Code secret requis pour créer un compte administrateur"
-                                    : "Code secret requis pour créer un compte agent"}
+                                    ? "🔒 Code secret requis pour créer un compte administrateur"
+                                    : "🔒 Code secret requis pour créer un compte agent"}
                             </small>
                         </div>
                     )}
 
                     <div className="form-group">
-                        <label htmlFor="password">Mot de passe *</label>
+                        <label htmlFor="password">
+                            <span className="label-icon">🔒</span>
+                            Mot de passe
+                        </label>
                         <input
                             type="password"
                             id="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            placeholder="Minimum 6 caractères"
                             required
                             disabled={loading}
                             minLength={6}
                         />
-                        <small className="form-text">Minimum 6 caractères</small>
+                        <small className="form-text">💡 Minimum 6 caractères</small>
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirmPassword">Confirmer le mot de passe *</label>
+                        <label htmlFor="confirmPassword">
+                            <span className="label-icon">🔐</span>
+                            Confirmer le mot de passe
+                        </label>
                         <input
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
+                            placeholder="Confirmez votre mot de passe"
                             required
                             disabled={loading}
                             minLength={6}
@@ -311,12 +362,19 @@ const Register: React.FC = () => {
                         className={`auth-button ${formData.role.toLowerCase()}-button`}
                         disabled={loading}
                     >
-                        {loading ? 'Inscription...' : `S'inscrire en tant que ${formData.role.toLowerCase()}`}
+                        {loading ? (
+                            <>
+                                <span className="spinner"></span>
+                                Inscription en cours...
+                            </>
+                        ) : (
+                            `Créer mon compte ${formData.role.toLowerCase()}`
+                        )}
                     </button>
                 </form>
 
                 <div className="auth-link">
-                    <p>Déjà un compte ? <Link to="/login">Se connecter</Link></p>
+                    <p>Vous avez déjà un compte ? <Link to="/login">Se connecter</Link></p>
                 </div>
             </div>
         </div>
@@ -324,3 +382,4 @@ const Register: React.FC = () => {
 };
 
 export default Register;
+
