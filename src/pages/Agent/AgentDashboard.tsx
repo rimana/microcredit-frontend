@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { creditService } from '../../services/api/credit';
+import { useAuth } from '../../context/AuthContext'; // ← Ajoute cette ligne
+import { useNavigate } from 'react-router-dom'; // ← Ajoute cette ligne
 import './AgentDashboard.css';
 
 const AgentDashboard = () => {
+    const { logout } = useAuth(); // ← Récupère la fonction logout
+    const navigate = useNavigate(); // ← Pour rediriger après déconnexion
+
     const [pendingCredits, setPendingCredits] = useState<any[]>([]);
     const [selectedCredit, setSelectedCredit] = useState<any>(null);
     const [loading, setLoading] = useState(false);
@@ -33,7 +38,6 @@ const AgentDashboard = () => {
         }
     };
 
-    // Analyse ML réelle sur la demande sélectionnée
     const handleAnalyzeCredit = async () => {
         if (!selectedCredit) return;
 
@@ -41,7 +45,6 @@ const AgentDashboard = () => {
             setLoading(true);
             const analysis = await creditService.analyzeCreditRequest(selectedCredit.id);
 
-            // Mise à jour avec les résultats frais du modèle
             setSelectedCredit({
                 ...selectedCredit,
                 score: analysis.creditScore ?? selectedCredit.score,
@@ -57,13 +60,12 @@ const AgentDashboard = () => {
             alert('Analyse ML réelle terminée avec succès !');
         } catch (error: any) {
             console.error('Erreur analyse ML:', error);
-            alert('Erreur lors de l\'analyse : ' + (error.response?.data?.error || error.message));
+            alert('Erreur lors de l\'analyse ML.');
         } finally {
             setLoading(false);
         }
     };
 
-    // Décision réelle : Approuver ou Rejeter
     const handleReviewCredit = async (decision: 'APPROVE' | 'REJECT', feedback?: string) => {
         if (!selectedCredit) return;
 
@@ -74,29 +76,49 @@ const AgentDashboard = () => {
 
             alert(`Crédit ${decision === 'APPROVE' ? 'approuvé' : 'rejeté'} avec succès !`);
 
-            // Retire de la liste en attente
             setPendingCredits(prev => prev.filter(c => c.id !== selectedCredit.id));
             setSelectedCredit(null);
 
-            // Recharge la liste pour être sûr
             fetchPendingCredits();
 
         } catch (error: any) {
             console.error('Erreur décision:', error);
-            alert('Erreur lors de la décision : ' + (error.response?.data?.error || error.message));
+            alert('Erreur : ' + (error.response?.data?.error || error.message || 'Inconnu'));
         } finally {
             setLoading(false);
         }
     };
 
+    const handleLogout = () => {
+        logout(); // Appelle la fonction de déconnexion du contexte
+        navigate('/login'); // Redirige vers la page de connexion
+    };
+
     return (
         <div className="agent-dashboard">
+            {/* Header avec boutons ML et Déconnexion */}
             <div className="dashboard-header">
-                <h1>Tableau de Bord Agent</h1>
-                <p className="subtitle">Gérez et analysez les demandes de crédit</p>
+                <div>
+                    <h1>Tableau de Bord Agent</h1>
+                    <p className="subtitle">Gérez et analysez les demandes de crédit</p>
+                </div>
+
+                <div className="header-actions">
+                    <button className="btn-ml-test">
+                        🧪 Tester le Modèle ML
+                    </button>
+                    <button className="btn-quick-ml">
+                        🔍 Test Rapide
+                    </button>
+                    <button className="btn-logout" onClick={handleLogout}>
+                        🚪 Déconnexion
+                    </button>
+                </div>
             </div>
 
+            {/* Le reste du code reste identique */}
             <div className="dashboard-content">
+                {/* Liste des demandes en attente */}
                 <div className="pending-list">
                     <div className="list-header">
                         <h2>Demandes en Attente ({pendingCredits.length})</h2>
@@ -106,9 +128,13 @@ const AgentDashboard = () => {
                     </div>
 
                     {listLoading ? (
-                        <div className="empty-state">Chargement des demandes...</div>
+                        <div className="empty-state">
+                            <div className="empty-icon">⏳</div>
+                            <h3>Chargement des demandes...</h3>
+                        </div>
                     ) : pendingCredits.length === 0 ? (
                         <div className="empty-state">
+                            <div className="empty-icon">📋</div>
                             <h3>Aucune demande en attente</h3>
                             <p>Toutes les demandes ont été traitées.</p>
                         </div>
@@ -133,13 +159,16 @@ const AgentDashboard = () => {
                                     <div className="credit-date">
                                         {new Date(credit.createdAt).toLocaleDateString('fr-FR')}
                                     </div>
-                                    <div className="credit-purpose">{credit.purpose}</div>
+                                    <div className="credit-purpose">
+                                        {credit.purpose}
+                                    </div>
                                 </div>
                             </div>
                         ))
                     )}
                 </div>
 
+                {/* Détails du crédit sélectionné */}
                 {selectedCredit && (
                     <div className="credit-details">
                         <div className="details-header">

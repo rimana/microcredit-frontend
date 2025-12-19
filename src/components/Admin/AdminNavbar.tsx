@@ -14,7 +14,7 @@ const AdminNavbar: React.FC = () => {
             <div className="navbar-header">
                 <h2>Admin Panel</h2>
                 <div className="user-info">
-                    <span>👤 {user?.username}</span>
+                    <span> {user?.username}</span>
                     <button onClick={logout} className="logout-btn">
                         Déconnexion
                     </button>

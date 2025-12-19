@@ -9,6 +9,10 @@ const CreditManagement: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
 
+  // États pour la modale
+  const [selectedCreditDetails, setSelectedCreditDetails] = useState<any>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+
   useEffect(() => {
     loadCredits();
   }, []);
@@ -17,7 +21,7 @@ const CreditManagement: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await creditService.getAllCreditRequests(); // ← Utilise la bonne méthode
+      const data = await creditService.getAllCreditRequests();
       setCredits(data);
     } catch (error: any) {
       console.error('Error loading credits:', error);
@@ -45,6 +49,35 @@ const CreditManagement: React.FC = () => {
   };
 
   const stats = calculateStats();
+
+  // Fonctions pour la modale
+  const handleViewDetails = (credit: any) => {
+    setSelectedCreditDetails(credit);
+    setShowDetailsModal(true);
+  };
+
+  const closeModal = () => {
+    setShowDetailsModal(false);
+    setSelectedCreditDetails(null);
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'PENDING': return 'En attente';
+      case 'APPROVED': return 'Approuvée';
+      case 'REJECTED': return 'Rejetée';
+      default: return status || 'Inconnu';
+    }
+  };
+
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'PENDING': return 'status-pending';
+      case 'APPROVED': return 'status-approved';
+      case 'REJECTED': return 'status-rejected';
+      default: return 'status-default';
+    }
+  };
 
   return (
       <div className="admin-layout">
@@ -168,14 +201,17 @@ const CreditManagement: React.FC = () => {
                         <td>{credit.duration} mois</td>
                         <td>{credit.interestRate || '-'} %</td>
                         <td>
-                      <span className={`status-badge status-${credit.status?.toLowerCase()}`}>
-                        {credit.status}
-                      </span>
+                          <span className={`status-badge status-${credit.status?.toLowerCase()}`}>
+                            {getStatusText(credit.status)}
+                          </span>
                         </td>
                         <td>{new Date(credit.createdAt).toLocaleDateString('fr-FR')}</td>
                         <td>{credit.score || '-'}</td>
                         <td>
-                          <button onClick={() => alert(`Détails du crédit #${credit.id}`)}>
+                          <button
+                              className="btn-details"
+                              onClick={() => handleViewDetails(credit)}
+                          >
                             Voir détails
                           </button>
                         </td>
@@ -185,6 +221,82 @@ const CreditManagement: React.FC = () => {
                 </table>
             )}
           </div>
+
+          {/* MODALE DES DÉTAILS DU CRÉDIT */}
+          {showDetailsModal && selectedCreditDetails && (
+              <div className="modal-overlay" onClick={closeModal}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                  <div className="modal-header">
+                    <h2>Détails de la Demande #{selectedCreditDetails.id}</h2>
+                    <button className="close-btn" onClick={closeModal}>×</button>
+                  </div>
+
+                  <div className="modal-body">
+                    <div className="detail-grid">
+                      <div className="detail-item">
+                        <strong>Client :</strong> {selectedCreditDetails.user?.username || 'Inconnu'}
+                      </div>
+                      <div className="detail-item">
+                        <strong>Montant :</strong> {selectedCreditDetails.amount?.toLocaleString()} DH
+                      </div>
+                      <div className="detail-item">
+                        <strong>Durée :</strong> {selectedCreditDetails.duration} mois
+                      </div>
+                      <div className="detail-item">
+                        <strong>Taux :</strong> {selectedCreditDetails.interestRate || '-'} %
+                      </div>
+                      <div className="detail-item">
+                        <strong>Objet :</strong> {selectedCreditDetails.purpose}
+                      </div>
+                      <div className="detail-item">
+                        <strong>Date :</strong> {new Date(selectedCreditDetails.createdAt).toLocaleDateString('fr-FR')}
+                      </div>
+                      <div className="detail-item">
+                        <strong>Statut :</strong>
+                        <span className={`status-badge ${getStatusClass(selectedCreditDetails.status)}`}>
+                        {getStatusText(selectedCreditDetails.status)}
+                      </span>
+                      </div>
+                    </div>
+
+                    {/* Scoring ML */}
+                    {selectedCreditDetails.score && (
+                        <div className="scoring-section">
+                          <h3>Analyse IA (Scoring)</h3>
+                          <div className="detail-grid">
+                            <div className="detail-item">
+                              <strong>Score :</strong> {selectedCreditDetails.score}/850
+                            </div>
+                            <div className="detail-item">
+                              <strong>Risque :</strong> {selectedCreditDetails.riskLevel}
+                            </div>
+                            <div className="detail-item">
+                              <strong>Recommandation IA :</strong> {selectedCreditDetails.recommendation}
+                            </div>
+                            {selectedCreditDetails.probabilityDefault && (
+                                <div className="detail-item">
+                                  <strong>Probabilité de défaut :</strong> {(selectedCreditDetails.probabilityDefault * 100).toFixed(1)}%
+                                </div>
+                            )}
+                          </div>
+                        </div>
+                    )}
+
+                    {/* Commentaire agent */}
+                    {selectedCreditDetails.agentNotes && (
+                        <div className="agent-comment-section">
+                          <h3>Commentaire de l'agent</h3>
+                          <p>{selectedCreditDetails.agentNotes}</p>
+                        </div>
+                    )}
+                  </div>
+
+                  <div className="modal-footer">
+                    <button className="btn-close" onClick={closeModal}>Fermer</button>
+                  </div>
+                </div>
+              </div>
+          )}
         </div>
       </div>
   );

@@ -65,7 +65,7 @@ const AdminDashboard: React.FC = () => {
               />
               <StatCard
                 title="Montant Total"
-                value={`${stats.totalAmount.toLocaleString()} €`}
+                value={`${stats.totalAmount.toLocaleString()} DH`}
                 icon="fa-euro-sign"
                 color="success"
               />

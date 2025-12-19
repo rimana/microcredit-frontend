@@ -947,7 +947,7 @@
     .admin-container {
         padding: 20px 15px;
     }
-    
+
     .stats-charts {
         grid-template-columns: 1fr;
     }
@@ -959,37 +959,37 @@
         gap: 15px;
         text-align: center;
     }
-    
+
     .admin-nav .nav-link {
         padding: 12px 15px;
         font-size: 14px;
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .filter-row {
         grid-template-columns: 1fr;
     }
-    
+
     .action-buttons {
         flex-direction: column;
     }
-    
+
     .settings-actions {
         flex-direction: column;
     }
-    
+
     .admin-stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .users-table,
     .credits-table {
         font-size: 14px;
     }
-    
+
     .users-table th,
     .users-table td,
     .credits-table th,
@@ -1002,15 +1002,15 @@
     .admin-container {
         padding: 15px 10px;
     }
-    
+
     .admin-page-title {
         font-size: 24px;
     }
-    
+
     .admin-card {
         padding: 20px;
     }
-    
+
     .settings-form {
         padding: 20px;
     }
