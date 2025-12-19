@@ -244,7 +244,7 @@ const CreditRequestForm: React.FC = () => {
                             </div>
 
                             <div className="form-group">
-                                <label>CIN Recto * (avec OCR)</label>
+                                <label>CIN Recto * </label>
                                 <div className="file-upload">
                                     <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'idCardRecto')} required />
                                     <div className="file-upload-label">
@@ -351,10 +351,6 @@ const CreditRequestForm: React.FC = () => {
                                 Je suis fonctionnaire
                             </label>
                             <label className="checkbox-label">
-                                <input type="checkbox" name="employed" checked={formData.employed} onChange={handleInputChange} />
-                                Je suis actuellement employé
-                            </label>
-                            <label className="checkbox-label">
                                 <input type="checkbox" name="hasGuarantor" checked={formData.hasGuarantor} onChange={handleInputChange} />
                                 J'ai un garant
                             </label>
@@ -415,7 +411,7 @@ const CreditRequestForm: React.FC = () => {
 
                         <div className="form-row">
                             <div className="form-group">
-                                <label>Montant Demandé (DHS) *</label>
+                                <label>Montant Demandé (MAD) *</label>
                                 <input
                                     type="number"
                                     name="amount"
@@ -469,7 +465,6 @@ const CreditRequestForm: React.FC = () => {
                     {/* Section informations système */}
                     <div className="system-info">
                         <h4>ℹ️ Information Système</h4>
-                        <p>Votre demande sera automatiquement analysée par notre système d'intelligence artificielle (XGBoost).</p>
                         <p>Vous recevrez une notification dès que l'agent aura traité votre demande.</p>
                     </div>
 
