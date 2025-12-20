@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# IDE
+/.idea/workspace.xml
+/.idea/usage.statistics.xml
+/.idea/shelf
+/.idea/caches
+/.idea/sonarlint
+/.idea/*.iml
+/.idea/modules.xml
+

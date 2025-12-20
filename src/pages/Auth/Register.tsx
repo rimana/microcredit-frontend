@@ -86,7 +86,6 @@ const Register: React.FC = () => {
         setError('');
         setLoading(true);
 
-        // Validation de base
         if (formData.password !== formData.confirmPassword) {
             setError('Les mots de passe ne correspondent pas');
             setLoading(false);
@@ -99,7 +98,6 @@ const Register: React.FC = () => {
             return;
         }
 
-        // Validation pour ADMIN et AGENT - CORRECTION ICI
         if (needsSecretCode() && !formData.secretCode) {
             setError(`Le code secret est requis pour créer un compte ${formData.role.toLowerCase()}`);
             setLoading(false);
@@ -107,7 +105,6 @@ const Register: React.FC = () => {
         }
 
         try {
-            // Préparer les données
             const userData = {
                 username: formData.username,
                 email: formData.email,
@@ -132,21 +129,20 @@ const Register: React.FC = () => {
         }
     };
 
-    // Fonction pour déterminer si le champ secretCode doit être requis
     const isSecretCodeRequired = () => {
         return formData.role === UserRole.ADMIN || formData.role === UserRole.AGENT;
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
+        <div className="auth-page">  {/* ← CHANGEMENT ICI : auth-page pour le fond + centrage */}
+            <div className="auth-container">  {/* ← La carte glassmorphism */}
                 {/* Logo sophistiqué */}
                 <div className="auth-logo">
                     <div className="logo-circle">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5Z" 
+                            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5Z"
                                   stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                            <path d="M20 12V20L26 26" 
+                            <path d="M20 12V20L26 26"
                                   stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </div>
@@ -382,4 +378,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-

@@ -1,190 +1,439 @@
-/* ===========================
-   STAT CARDS - DESIGN SOPHISTIQUÉ
-   =========================== */
+/* ============================================
+   STAT CARDS ULTRA-SOPHISTIQUÉES
+   Glassmorphism + 3D + Animations Premium
+   ============================================ */
+
+/* Variables CSS globales pour les cartes de statistiques */
+:root {
+    --card-gradient-start: #667eea;
+    --card-gradient-end: #764ba2;
+    --card-glow-color: rgba(102, 126, 234, 0.4);
+    --icon-shadow-color: rgba(102, 126, 234, 0.3);
+}
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 28px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    /* Styles de la carte */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 24px;
+    padding: 30px 25px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+                0 40px 100px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 0;
+    width: 100%;
 }
 
+/* Barre de couleur supérieure animée */
 .stat-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 5px;
     background: linear-gradient(90deg, var(--card-gradient-start), var(--card-gradient-end));
+    background-size: 200% auto;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s ease;
+    animation: gradientSlide 3s ease infinite;
+}
+
+@keyframes gradientSlide {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
 }
 
 .stat-card:hover::before {
     transform: scaleX(1);
 }
 
-.stat-card:hover {
-    transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+/* Effet de lueur en arrière-plan */
+.stat-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--card-glow-color) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.6s ease;
+    pointer-events: none;
 }
 
+.stat-card:hover::after {
+    opacity: 0.15;
+    width: 250px;
+    height: 250px;
+}
+
+/* Animation hover 3D */
+.stat-card:hover {
+    transform: translateY(-12px) scale(1.02) rotateX(5deg);
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 30px 80px rgba(102, 126, 234, 0.25),
+                0 0 0 2px rgba(102, 126, 234, 0.3) inset,
+                0 0 80px rgba(102, 126, 234, 0.15);
+}
+
+/* ============================================
+   ICÔNE SOPHISTIQUÉE
+   ============================================ */
+
 .stat-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 16px;
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 32px;
     position: relative;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 8px 25px var(--icon-shadow-color);
 }
 
+/* Effet de rotation au hover */
 .stat-card:hover .stat-icon {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.15) rotate(-5deg);
+    box-shadow: 0 12px 35px var(--icon-shadow-color);
 }
 
+/* Lueur derrière l'icône */
 .stat-icon::after {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 16px;
+    border-radius: 20px;
     background: inherit;
-    opacity: 0.3;
-    filter: blur(15px);
+    opacity: 0.4;
+    filter: blur(20px);
     z-index: -1;
+    transition: all 0.5s ease;
 }
 
+.stat-card:hover .stat-icon::after {
+    opacity: 0.6;
+    filter: blur(25px);
+}
+
+/* ============================================
+   CONTENU DE LA CARTE
+   ============================================ */
+
+.stat-content,
+.stat-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0; /* Permet au texte de se couper correctement */
+}
+
+.stat-info h3,
+.stat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    transition: color 0.3s ease;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.stat-card:hover .stat-title,
+.stat-card:hover .stat-info h3 {
+    color: #475569;
+}
+
+.stat-info p.stat-value,
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1.5px;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.2));
+    animation: valueGradientShift 4s ease infinite;
+}
+
+@keyframes valueGradientShift {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+.stat-card:hover .stat-value {
+    transform: scale(1.08);
+    filter: drop-shadow(0 6px 20px rgba(102, 126, 234, 0.35));
+    animation: pulseValue 2s ease-in-out infinite;
+}
+
+@keyframes pulseValue {
+    0%, 100% { transform: scale(1.08); }
+    50% { transform: scale(1.11); }
+}
+
+/* Sous-titre optionnel */
+.stat-subtitle {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ============================================
+   VARIANTES DE COULEURS
+   ============================================ */
+
+/* Variante Primary (Bleu) */
 .stat-card.primary {
-    --card-gradient-start: #3b82f6;
-    --card-gradient-end: #1d4ed8;
+    --card-gradient-start: #667eea;
+    --card-gradient-end: #5568d3;
+    --card-glow-color: rgba(102, 126, 234, 0.5);
+    --icon-shadow-color: rgba(102, 126, 234, 0.3);
 }
 
 .stat-card.primary .stat-icon {
     background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
     color: #1e40af;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
+/* Variante Success (Vert) */
 .stat-card.success {
     --card-gradient-start: #10b981;
     --card-gradient-end: #059669;
+    --card-glow-color: rgba(16, 185, 129, 0.5);
+    --icon-shadow-color: rgba(16, 185, 129, 0.3);
 }
 
 .stat-card.success .stat-icon {
     background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
     color: #047857;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
+/* Variante Warning (Orange/Jaune) */
 .stat-card.warning {
     --card-gradient-start: #f59e0b;
     --card-gradient-end: #d97706;
+    --card-glow-color: rgba(245, 158, 11, 0.5);
+    --icon-shadow-color: rgba(245, 158, 11, 0.3);
 }
 
 .stat-card.warning .stat-icon {
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
     color: #b45309;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
 }
 
+/* Variante Danger (Rouge) */
 .stat-card.danger {
     --card-gradient-start: #ef4444;
     --card-gradient-end: #dc2626;
+    --card-glow-color: rgba(239, 68, 68, 0.5);
+    --icon-shadow-color: rgba(239, 68, 68, 0.3);
 }
 
 .stat-card.danger .stat-icon {
     background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
     color: #b91c1c;
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
-.stat-info {
-    flex: 1;
+/* Variante Info (Cyan) */
+.stat-card.info {
+    --card-gradient-start: #06b6d4;
+    --card-gradient-end: #0891b2;
+    --card-glow-color: rgba(6, 182, 212, 0.5);
+    --icon-shadow-color: rgba(6, 182, 212, 0.3);
 }
 
-.stat-info h3 {
-    margin: 0 0 8px 0;
-    color: #64748b;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.stat-card.info .stat-icon {
+    background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+    color: #0e7490;
 }
 
-.stat-value {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 800;
-    color: #1e293b;
-    line-height: 1;
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
+/* ============================================
+   BADGE TENDANCE (optionnel)
+   ============================================ */
 
 .stat-trend {
-    display: inline-flex;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
     align-items: center;
-    gap: 4px;
-    margin-top: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
+    gap: 5px;
+    backdrop-filter: blur(10px);
 }
 
 .stat-trend.up {
-    color: #059669;
-    background: #d1fae5;
+    background: rgba(16, 185, 129, 0.15);
+    color: #047857;
 }
 
 .stat-trend.down {
-    color: #dc2626;
-    background: #fee2e2;
+    background: rgba(239, 68, 68, 0.15);
+    color: #b91c1c;
 }
 
-.stat-trend::before {
-    content: '↑';
-    font-size: 16px;
+.stat-trend i {
+    font-size: 10px;
 }
 
-.stat-trend.down::before {
-    content: '↓';
+/* ============================================
+   STATES INTERACTIFS ADDITIONNELS
+   ============================================ */
+
+.stat-card:active {
+    transform: translateY(-8px) scale(1.01);
 }
 
-/* Animation au chargement */
-@keyframes statCardFadeIn {
+.stat-card.loading {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.stat-card.loading .stat-value {
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    .stat-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 26px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    .stat-title {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card {
+        padding: 20px 18px;
+    }
+
+    .stat-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS D'ENTRÉE
+   ============================================ */
+
+.stat-card {
+    animation: cardEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+}
+
+@keyframes cardEntrance {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(40px) scale(0.95) rotateX(-10deg);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1) rotateX(0deg);
     }
 }
 
-.stat-card {
-    animation: statCardFadeIn 0.5s ease both;
+/* ============================================
+   EFFETS DE BRILLANCE
+   ============================================ */
+
+@keyframes cardShine {
+    0% {
+        left: -100%;
+    }
+    50%, 100% {
+        left: 200%;
+    }
 }
 
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
+.stat-card.shine::before {
+    animation: cardShine 3s ease-in-out infinite, gradientSlide 3s ease infinite;
+}
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+.stat-card:focus-visible {
+    outline: 3px solid #667eea;
+    outline-offset: 4px;
+}
+
+/* ============================================
+   MODE COMPACT (optionnel)
+   ============================================ */
+
+.stat-card.compact {
+    padding: 20px 18px;
+    gap: 15px;
+}
+
+.stat-card.compact .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+}
+
+.stat-card.compact .stat-value {
+    font-size: 1.75rem;
+}
+
+.stat-card.compact .stat-title {
+    font-size: 11px;
+}
+

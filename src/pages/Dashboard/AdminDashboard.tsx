@@ -44,32 +44,63 @@ const AdminDashboard: React.FC = () => {
           <h1>Dashboard Administrateur</h1>
           
           {stats && (
-            <div className="stats-grid">
-              <StatCard
-                title="Total Utilisateurs"
-                value={stats.totalUsers}
-                icon="fa-users"
-                color="primary"
-              />
-              <StatCard
-                title="Clients Actifs"
-                value={stats.activeClients}
-                icon="fa-user-check"
-                color="success"
-              />
-              <StatCard
-                title="Crédits en Attente"
-                value={stats.pendingCredits}
-                icon="fa-clock"
-                color="warning"
-              />
-              <StatCard
-                title="Montant Total"
-                value={`${stats.totalAmount.toLocaleString()} DH`}
-                icon="fa-euro-sign"
-                color="success"
-              />
-            </div>
+            <>
+              <h2 className="section-title">📊 Statistiques Utilisateurs</h2>
+              <div className="stats-grid">
+                <StatCard
+                  title="Total Utilisateurs"
+                  value={stats.totalUsers}
+                  icon="fa-users"
+                  color="primary"
+                />
+                <StatCard
+                  title="Clients Actifs"
+                  value={stats.activeClients}
+                  icon="fa-user-check"
+                  color="success"
+                />
+                <StatCard
+                  title="Total Agents"
+                  value={stats.totalAgents}
+                  icon="fa-user-tie"
+                  color="primary"
+                />
+                <StatCard
+                  title="Administrateurs"
+                  value={stats.totalAdmins}
+                  icon="fa-user-shield"
+                  color="danger"
+                />
+              </div>
+
+              <h2 className="section-title">💳 Statistiques Crédits</h2>
+              <div className="stats-grid">
+                <StatCard
+                  title="Total Crédits"
+                  value={stats.totalCredits}
+                  icon="fa-file-invoice-dollar"
+                  color="primary"
+                />
+                <StatCard
+                  title="Crédits en Attente"
+                  value={stats.pendingCredits}
+                  icon="fa-clock"
+                  color="warning"
+                />
+                <StatCard
+                  title="Crédits Approuvés"
+                  value={stats.approvedCredits}
+                  icon="fa-check-circle"
+                  color="success"
+                />
+                <StatCard
+                  title="Crédits Rejetés"
+                  value={stats.rejectedCredits}
+                  icon="fa-times-circle"
+                  color="danger"
+                />
+              </div>
+            </>
           )}
         </div>
       </div>

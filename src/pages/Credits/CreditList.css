@@ -1,51 +1,211 @@
 .credit-list-container {
     min-height: 100vh;
-    background: #f8f9fa;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #e0e7ff 100%);
+    background-size: 400% 400%;
+    animation: backgroundFlow 20s ease infinite;
+    position: relative;
+    overflow-x: hidden;
 }
 
-/* Header (déjà présent dans ton projet, je le garde compatible) */
+@keyframes backgroundFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.credit-list-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 15% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   HEADER ULTRA-SOPHISTIQUÉ
+   Glassmorphism + 3D + Animations
+   ============================================ */
+
 .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    width: 100%;
+    margin: 0;
     padding: 0;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #667eea 100%);
+    background-size: 300% 300%;
+    animation: headerGradientFlow 15s ease infinite;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+    padding-bottom: 20px;
+    z-index: 10;
+}
+
+@keyframes headerGradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Effet de brillance qui traverse le header */
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(-25deg);
+    animation: headerShine 6s infinite;
+}
+
+@keyframes headerShine {
+    0%, 90% { left: -100%; }
+    100% { left: 200%; }
 }
 
 .header-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 20px;
+    padding: 20px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .header h1 {
-    font-size: 24px;
+    font-size: 32px;
+    font-weight: 900;
     margin: 0;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
+                 0 0 30px rgba(255, 255, 255, 0.2);
+    letter-spacing: -0.5px;
+    animation: titleFloat 3s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes titleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Effet de lueur derrière le titre */
+.header h1::before {
+    content: 'MicroCredit Platform';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    color: transparent;
+    background: linear-gradient(45deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: blur(10px);
+    opacity: 0.5;
 }
 
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
+    color: white;
 }
 
+.user-menu span {
+    font-size: 15px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.user-menu span:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.user-menu strong {
+    color: #fff;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   NAVIGATION SOPHISTIQUÉE
+   ============================================ */
+
 .nav {
-    background: #2c3e50;
-    padding: 0 20px;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0;
+    position: relative;
+    background: rgba(30, 41, 59, 0.98);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 9;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-link {
     display: inline-block;
-    color: white;
+    color: rgba(255, 255, 255, 0.95);
     text-decoration: none;
-    padding: 12px 20px;
-    transition: background 0.3s;
+    padding: 14px 26px;
+    margin: 0 4px;
+    font-weight: 700;
+    font-size: 15px;
+    position: relative;
+    transition: all 0.35s ease;
+    border-radius: 12px;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
 .nav-link.active {
-    background: #3498db;
+    color: white;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    font-weight: 800;
+}
+
+/* Petite barre de soulignement animée */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 60%;
 }
 
 /* Conteneur principal */
@@ -53,53 +213,111 @@
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .container h2 {
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 40px;
-    font-size: 2rem;
+    margin-bottom: 50px;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    animation: titleSlideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) backwards;
 }
 
-/* État vide */
+@keyframes titleSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* État vide avec glassmorphism */
 .empty-state {
     text-align: center;
-    padding: 80px 20px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 2px dashed #dee2e6;
+    padding: 80px 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 28px;
+    border: 2px dashed rgba(102, 126, 234, 0.3);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+    animation: emptyStateSlideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.2s backwards;
+}
+
+@keyframes emptyStateSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .empty-state h3 {
-    color: #34495e;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 15px;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 800;
 }
 
 .empty-state p {
-    color: #7f8c8d;
+    color: #64748b;
     margin-bottom: 35px;
     font-size: 18px;
+    font-weight: 500;
 }
 
 .action-btn.primary {
-    background: #3498db;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 16px 36px;
-    border-radius: 12px;
+    padding: 18px 40px;
+    border-radius: 16px;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-    transition: all 0.3s ease;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn.primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.action-btn.primary:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .action-btn.primary:hover {
-    background: #2980b9;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 45px rgba(102, 126, 234, 0.5);
 }
 
 /* Grille des cartes */

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUniversalOcr } from '../../hooks/useUniversalOcr';
-import { creditService } from '../../services/api/credit'; // AJOUT: Import du service crédit
+import { creditService } from '../../services/api/credit';
 import './CreditForm.css';
 
 const CreditRequestForm: React.FC = () => {
@@ -202,232 +202,308 @@ const CreditRequestForm: React.FC = () => {
     };
 
     return (
-        <div className="credit-form-container">
-            <div className="header">
-                <div className="header-content">
+        <div className="credit-form-page">
+            <div className="credit-form-container">
+                {/* Header avec gradient */}
+                <div className="form-header">
                     <h1>MicroCredit Platform</h1>
-                    <div className="user-menu">
-                        <span>Bonjour, <strong>{user?.fullname}</strong></span>
-                        <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                    </div>
+                    <p>Bonjour, <strong>{user?.fullname}</strong></p>
                 </div>
-            </div>
 
-            <nav className="nav">
-                <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                <Link to="/credit-request" className="nav-link active">Demande de Crédit</Link>
-                <Link to="/my-credits" className="nav-link">Mes Crédits</Link>
-            </nav>
+                {/* Navigation tabs */}
+                <nav className="nav-tabs">
+                    <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/credit-request" className="active">Demande de Crédit</Link>
+                    <Link to="/my-credits">Mes Crédits</Link>
+                </nav>
 
-            <div className="form-wrapper">
-                <h2>Nouvelle Demande de Crédit</h2>
-                <p className="form-description">
-                    Tous les champs marqués d'un * sont obligatoires.
-                    Notre système d'IA analysera automatiquement votre demande.
-                </p>
+                {/* Contenu du formulaire */}
+                <div className="form-content-wrapper">
+                    <h1>Nouvelle Demande de Crédit</h1>
+                    <p className="form-description">
+                        Tous les champs marqués d'un * sont obligatoires.
+                        Notre système d'IA analysera automatiquement votre demande.
+                    </p>
 
-                <form onSubmit={handleSubmit} className="credit-form">
+                    <form onSubmit={handleSubmit} className="form-card">
                     {/* Section 1: Informations Personnelles */}
-                    <div className="form-section">
-                        <h3 className="section-title">📝 Informations Personnelles</h3>
+                        <div className="form-section">
+                            <h2 className="form-section-title">
+                                <span className="section-icon">📝</span>
+                                Informations Personnelles
+                            </h2>
 
-                        {/* Upload Documents */}
-                        <div className="file-upload-group">
-                            <div className="form-group">
-                                <label>Photo d'Identité *</label>
-                                <div className="file-upload">
-                                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'photoIdentity')} required />
-                                    <div className="file-upload-label">
-                                        {files.photoIdentity ? '✓ Photo sélectionnée' : 'Photo d\'identité récente'}
-                                    </div>
+                            {/* Upload Documents */}
+                            <div className="form-grid form-grid-full">
+                                <div className="form-group">
+                                    <label className="file-upload-label">
+                                        PHOTO D'IDENTITÉ <span className="required">*</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleFileChange(e, 'photoIdentity')}
+                                        required
+                                    />
+                                    <span className="file-hint">
+                                        {files.photoIdentity ? `✓ ${files.photoIdentity.name}` : 'Photo d\'identité récente'}
+                                    </span>
                                 </div>
-                            </div>
 
-                            <div className="form-group">
-                                <label>CIN Recto * </label>
-                                <div className="file-upload">
-                                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'idCardRecto')} required />
-                                    <div className="file-upload-label">
-                                        {files.idCardRecto ? '✓ Recto sélectionné' : 'Recto de la CIN'}
-                                    </div>
+                                <div className="form-group">
+                                    <label className="file-upload-label">
+                                        CIN RECTO <span className="required">*</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleFileChange(e, 'idCardRecto')}
+                                        required
+                                    />
+                                    <span className="file-hint">
+                                        {files.idCardRecto ? `✓ ${files.idCardRecto.name}` : 'Recto de la CIN'}
+                                    </span>
+                                    <a href="#" className="scan-link">Le scan automatique se déclenchera</a>
                                 </div>
-                                <div className="ocr-hint">🔍 Le scan automatique se déclenchera</div>
-                            </div>
 
-                            <div className="form-group">
-                                <label>CIN Verso *</label>
-                                <div className="file-upload">
-                                    <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'idCardVerso')} required />
-                                    <div className="file-upload-label">
-                                        {files.idCardVerso ? '✓ Verso sélectionné' : 'Verso de la CIN'}
-                                    </div>
+                                <div className="form-group">
+                                    <label className="file-upload-label">
+                                        CIN VERSO <span className="required">*</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => handleFileChange(e, 'idCardVerso')}
+                                        required
+                                    />
+                                    <span className="file-hint">
+                                        {files.idCardVerso ? `✓ ${files.idCardVerso.name}` : 'Verso de la CIN'}
+                                    </span>
                                 </div>
                             </div>
 
                             {/* Section OCR */}
-                            <div className="form-group full-width">
-                                <div className="ocr-section">
-                                    <h4>🔍 Scanner Automatique</h4>
-                                    {ocrLoading && <div className="ocr-loading">Analyse OCR en cours...</div>}
-                                    {ocrError && <div className="ocr-error">❌ {ocrError}</div>}
+                            {(ocrLoading || ocrError || ocrResult) && (
+                                <div className="scanner-section">
+                                    <h2 className="scanner-title">🔍 Scanner Automatique</h2>
+                                    {ocrLoading && <div className="loading">Analyse OCR en cours...</div>}
+                                    {ocrError && <div className="error-alert">❌ {ocrError}</div>}
                                     {renderOcrResults()}
                                 </div>
-                            </div>
-                        </div>
+                            )}
 
-                        {/* Informations basiques */}
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Nom Complet *</label>
-                                <input type="text" name="fullname" value={formData.fullname} onChange={handleInputChange} required />
-                            </div>
-                            <div className="form-group">
-                                <label>CIN *</label>
-                                <input type="text" name="cin" value={formData.cin} onChange={handleInputChange} required />
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Date de Naissance *</label>
-                                <input type="date" name="birthdate" value={formData.birthdate} onChange={handleInputChange} required />
-                                {formData.birthdate && (
-                                    <div className="age-display">
-                                        Âge: {calculateAge(formData.birthdate)} ans
-                                    </div>
-                                )}
-                            </div>
-                            <div className="form-group">
-                                <label>Téléphone *</label>
-                                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required />
-                            </div>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Adresse Complète *</label>
-                            <textarea name="address" rows={2} value={formData.address} onChange={handleInputChange} required />
-                        </div>
-                    </div>
-
-                    {/* Section 2: Situation Professionnelle & Revenus (CRITIQUE pour ML) */}
-                    <div className="form-section">
-                        <h3 className="section-title">💼 Situation Professionnelle & Revenus</h3>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Profession *</label>
-                                <select name="profession" value={formData.profession} onChange={handleInputChange} required>
-                                    <option value="">Sélectionnez...</option>
-                                    <option value="Ingénieur">Ingénieur</option>
-                                    <option value="Médecin">Médecin</option>
-                                    <option value="Enseignant">Enseignant</option>
-                                    <option value="Fonctionnaire">Fonctionnaire</option>
-                                    <option value="Commerçant">Commerçant</option>
-                                    <option value="Cadre">Cadre</option>
-                                    <option value="Employé">Employé</option>
-                                    <option value="Artisan">Artisan</option>
-                                    <option value="Étudiant">Étudiant</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
+                            {/* Informations basiques */}
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>NOM COMPLET <span className="required">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="fullname"
+                                        value={formData.fullname}
+                                        onChange={handleInputChange}
+                                        placeholder="Nom complet"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>CIN <span className="required">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="cin"
+                                        value={formData.cin}
+                                        onChange={handleInputChange}
+                                        placeholder="Numéro CIN"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>DATE DE NAISSANCE <span className="required">*</span></label>
+                                    <input
+                                        type="date"
+                                        name="birthdate"
+                                        value={formData.birthdate}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                    {formData.birthdate && (
+                                        <span className="file-hint">
+                                            Âge: {calculateAge(formData.birthdate)} ans
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-group">
+                                    <label>TÉLÉPHONE <span className="required">*</span></label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        placeholder="+212 6XX XXX XXX"
+                                        required
+                                    />
+                                </div>
                             </div>
 
-                            <div className="form-group">
-                                <label>Revenu Mensuel Net (DHS) *</label>
-                                <input
-                                    type="number"
-                                    name="monthlyIncome"
-                                    value={formData.monthlyIncome}
+                            <div className="form-group form-grid-full">
+                                <label>ADRESSE COMPLÈTE <span className="required">*</span></label>
+                                <textarea
+                                    name="address"
+                                    rows={3}
+                                    value={formData.address}
                                     onChange={handleInputChange}
-                                    min="1000"
-                                    step="500"
+                                    placeholder="Adresse complète"
                                     required
                                 />
                             </div>
                         </div>
 
-                        <div className="checkbox-group">
-                            <label className="checkbox-label">
-                                <input type="checkbox" name="isFunctionnaire" checked={formData.isFunctionnaire} onChange={handleInputChange} />
-                                Je suis fonctionnaire
-                            </label>
-                            <label className="checkbox-label">
-                                <input type="checkbox" name="hasGuarantor" checked={formData.hasGuarantor} onChange={handleInputChange} />
-                                J'ai un garant
-                            </label>
+                        {/* Section 2: Situation Professionnelle & Revenus (CRITIQUE pour ML) */}
+                        <div className="form-section">
+                            <h2 className="form-section-title">
+                                <span className="section-icon">💼</span>
+                                Situation Professionnelle & Revenus
+                            </h2>
+
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>PROFESSION <span className="required">*</span></label>
+                                    <select name="profession" value={formData.profession} onChange={handleInputChange} required>
+                                        <option value="">Sélectionnez...</option>
+                                        <option value="Ingénieur">Ingénieur</option>
+                                        <option value="Médecin">Médecin</option>
+                                        <option value="Enseignant">Enseignant</option>
+                                        <option value="Fonctionnaire">Fonctionnaire</option>
+                                        <option value="Commerçant">Commerçant</option>
+                                        <option value="Cadre">Cadre</option>
+                                        <option value="Employé">Employé</option>
+                                        <option value="Artisan">Artisan</option>
+                                        <option value="Étudiant">Étudiant</option>
+                                        <option value="Autre">Autre</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>REVENU MENSUEL NET (DHS) <span className="required">*</span></label>
+                                    <input
+                                        type="number"
+                                        name="monthlyIncome"
+                                        value={formData.monthlyIncome}
+                                        onChange={handleInputChange}
+                                        min="1000"
+                                        step="500"
+                                        placeholder="Ex: 5000"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-grid form-grid-2col">
+                                <div className="checkbox-group">
+                                    <input
+                                        type="checkbox"
+                                        id="isFunctionnaire"
+                                        name="isFunctionnaire"
+                                        checked={formData.isFunctionnaire}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label htmlFor="isFunctionnaire">Je suis fonctionnaire</label>
+                                </div>
+
+                                <div className="checkbox-group">
+                                    <input
+                                        type="checkbox"
+                                        id="hasGuarantor"
+                                        name="hasGuarantor"
+                                        checked={formData.hasGuarantor}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label htmlFor="hasGuarantor">J'ai un garant</label>
+                                </div>
+                            </div>
+
+                            {/* Documents professionnels conditionnels */}
+                            {formData.isFunctionnaire && (
+                                <div className="form-grid form-grid-2col">
+                                    <div className="form-group">
+                                        <label className="file-upload-label">ATTESTATION DE TRAVAIL <span className="required">*</span></label>
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileChange(e, 'workCertificate')}
+                                        />
+                                        <span className="file-hint">
+                                            {files.workCertificate ? `✓ ${files.workCertificate.name}` : 'Attestation de travail'}
+                                        </span>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="file-upload-label">BULLETIN DE SALAIRE <span className="required">*</span></label>
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileChange(e, 'salaryCertificate')}
+                                        />
+                                        <span className="file-hint">
+                                            {files.salaryCertificate ? `✓ ${files.salaryCertificate.name}` : '3 derniers bulletins'}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {formData.hasGuarantor && (
+                                <div className="form-grid form-grid-2col">
+                                    <div className="form-group">
+                                        <label className="file-upload-label">ATTESTATION DE TRAVAIL DU GARANT</label>
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileChange(e, 'guarantorWorkCert')}
+                                        />
+                                        <span className="file-hint">
+                                            {files.guarantorWorkCert ? `✓ ${files.guarantorWorkCert.name}` : 'Attestation travail garant'}
+                                        </span>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="file-upload-label">BULLETIN DE SALAIRE DU GARANT</label>
+                                        <input
+                                            type="file"
+                                            accept=".pdf,.jpg,.png"
+                                            onChange={(e) => handleFileChange(e, 'guarantorSalaryCert')}
+                                        />
+                                        <span className="file-hint">
+                                            {files.guarantorSalaryCert ? `✓ ${files.guarantorSalaryCert.name}` : 'Bulletins salaire garant'}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
-                        {/* Documents professionnels conditionnels */}
-                        {formData.isFunctionnaire ? (
-                            <div className="file-upload-group">
+                        {/* Section 3: Détails du Crédit */}
+                        <div className="form-section">
+                            <h2 className="form-section-title">
+                                <span className="section-icon">💰</span>
+                                Détails du Crédit
+                            </h2>
+
+                            <div className="form-grid">
                                 <div className="form-group">
-                                    <label>Attestation de Travail *</label>
-                                    <div className="file-upload">
-                                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, 'workCertificate')} />
-                                        <div className="file-upload-label">
-                                            {files.workCertificate ? '✓ Fichier sélectionné' : 'Attestation de travail'}
-                                        </div>
-                                    </div>
+                                    <label>MONTANT DEMANDÉ (MAD) <span className="required">*</span></label>
+                                    <input
+                                        type="number"
+                                        name="amount"
+                                        value={formData.amount}
+                                        onChange={handleInputChange}
+                                        min="5000"
+                                        max="100000"
+                                        step="1000"
+                                        placeholder="Ex: 50000"
+                                        required
+                                    />
+                                    <span className="file-hint">Entre 5,000 et 100,000 DHS</span>
                                 </div>
+
                                 <div className="form-group">
-                                    <label>Bulletin de Salaire *</label>
-                                    <div className="file-upload">
-                                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, 'salaryCertificate')} />
-                                        <div className="file-upload-label">
-                                            {files.salaryCertificate ? '✓ Fichier sélectionné' : '3 derniers bulletins'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : formData.hasGuarantor && (
-                            <div className="guarantor-section">
-                                <h4>Documents du Garant</h4>
-                                <div className="file-upload-group">
-                                    <div className="form-group">
-                                        <label>Attestation de Travail du Garant</label>
-                                        <div className="file-upload">
-                                            <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, 'guarantorWorkCert')} />
-                                            <div className="file-upload-label">
-                                                {files.guarantorWorkCert ? '✓ Fichier sélectionné' : 'Attestation travail garant'}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Bulletin de Salaire du Garant</label>
-                                        <div className="file-upload">
-                                            <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, 'guarantorSalaryCert')} />
-                                            <div className="file-upload-label">
-                                                {files.guarantorSalaryCert ? '✓ Fichier sélectionné' : 'Bulletins salaire garant'}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Section 3: Détails du Crédit */}
-                    <div className="form-section">
-                        <h3 className="section-title">💰 Détails du Crédit</h3>
-
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Montant Demandé (MAD) *</label>
-                                <input
-                                    type="number"
-                                    name="amount"
-                                    value={formData.amount}
-                                    onChange={handleInputChange}
-                                    min="5000"
-                                    max="100000"
-                                    step="1000"
-                                    required
-                                />
-                                <div className="amount-range">Entre 5,000 et 100,000 DHS</div>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Durée (Mois) *</label>
-                                <select name="duration" value={formData.duration} onChange={handleInputChange} required>
+                                    <label>DURÉE (MOIS) <span className="required">*</span></label>
+                                    <select name="duration" value={formData.duration} onChange={handleInputChange} required>
                                     <option value="6">6 mois</option>
                                     <option value="12">12 mois</option>
                                     <option value="24">24 mois</option>
@@ -436,42 +512,47 @@ const CreditRequestForm: React.FC = () => {
                                     <option value="60">60 mois</option>
                                 </select>
                             </div>
+                            </div>
+
+                            <div className="form-group form-grid-full">
+                                <label>OBJECTIF DU CRÉDIT <span className="required">*</span></label>
+                                <textarea
+                                    name="purpose"
+                                    rows={3}
+                                    value={formData.purpose}
+                                    onChange={handleInputChange}
+                                    placeholder="Ex: Achat voiture, Rénovation maison, Frais médicaux, Investissement..."
+                                    required
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label>TAUX D'INTÉRÊT SOUHAITÉ (%)</label>
+                                <select name="interestRate" value={formData.interestRate} onChange={handleInputChange}>
+                                    <option value="4.5">4.5% (Préférentiel)</option>
+                                    <option value="5.0">5.0% (Standard)</option>
+                                    <option value="5.5">5.5%</option>
+                                    <option value="6.0">6.0%</option>
+                                    <option value="6.5">6.5%</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label>Objectif du Crédit *</label>
-                            <textarea
-                                name="purpose"
-                                rows={3}
-                                value={formData.purpose}
-                                onChange={handleInputChange}
-                                placeholder="Ex: Achat voiture, Rénovation maison, Frais médicaux, Investissement..."
-                                required
-                            />
+                        {/* Section informations système */}
+                        <div className="scanner-section">
+                            <p style={{margin: 0}}>ℹ️ Vous recevrez une notification dès que l'agent aura traité votre demande.</p>
                         </div>
 
-                        <div className="form-group">
-                            <label>Taux d'intérêt souhaité (%)</label>
-                            <select name="interestRate" value={formData.interestRate} onChange={handleInputChange}>
-                                <option value="4.5">4.5% (Préférentiel)</option>
-                                <option value="5.0">5.0% (Standard)</option>
-                                <option value="5.5">5.5%</option>
-                                <option value="6.0">6.0%</option>
-                                <option value="6.5">6.5%</option>
-                            </select>
+                        <div className="form-actions">
+                            <Link to="/dashboard" className="btn btn-secondary">
+                                Annuler
+                            </Link>
+                            <button type="submit" className="btn btn-primary" disabled={submitLoading}>
+                                {submitLoading ? '⏳ Soumission en cours...' : '✅ Soumettre la Demande'}
+                            </button>
                         </div>
-                    </div>
-
-                    {/* Section informations système */}
-                    <div className="system-info">
-                        <h4>ℹ️ Information Système</h4>
-                        <p>Vous recevrez une notification dès que l'agent aura traité votre demande.</p>
-                    </div>
-
-                    <button type="submit" className="submit-btn" disabled={submitLoading}>
-                        {submitLoading ? '⏳ Soumission en cours...' : '✅ Soumettre la Demande'}
-                    </button>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     );
